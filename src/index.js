@@ -113,23 +113,35 @@ function linkedList(headNode = null) {
     return string;
   };
 
-  const insertAt = (value, index) => {
-    let node1 = node(value);
+  const insertAt = (node, index) => {
     if (index == 0) {
-      node1.setNext(headNode);
-      headNode = node1;
+      node.setNext(headNode);
+      headNode = node;
     } else {
       let cur = headNode;
       let i = 0;
-      while (i < index - 1 && cur != null) {
+      while (i < index - 1) {
         cur = cur.getNext();
         i++;
       }
-      if (cur === null) throw new Error("out of bounds");
-      cur.setNext(node1);
-      node1.setNext(cur.getNext());
+      node.setNext(cur.getNext());
+      cur.setNext(node);
     }
   };
+
+  const removeAt = (index) => {
+    if (index == 0) headNode = headNode.getNext();
+    else {
+      let cur = headNode;
+      let i = 0;
+      while (i < index - 1) {
+        cur = cur.getNext();
+        i++;
+      }
+      cur.setNext(cur.getNext().getNext());
+    }
+  };
+
   return {
     getHeadNode,
     appendNode,
@@ -143,6 +155,7 @@ function linkedList(headNode = null) {
     find,
     toString,
     insertAt,
+    removeAt,
   };
 }
 
@@ -171,7 +184,12 @@ console.log(linkedlist1.contains("figs"));
 console.log(linkedlist1.find("figs"));
 console.log(linkedlist1.toString());
 
-linkedlist1.insertAt("grapes", 1);
+const node4 = node("grapes");
+linkedlist1.insertAt(node4, 2);
 console.log(linkedlist1.toString());
+
+linkedlist1.removeAt(2);
+console.log(linkedlist1.toString());
+
 // console.log(linkedlist1.getHeadNode().getData());
 // linkedlist1.appendNode(node2);
